@@ -3,7 +3,8 @@ const mongoose = require('mongoose');
 const connectDB = async () => {
   try {
     console.log('Starting MongoDB connection attempt...');
-    
+    const uri = process.env.MONGO_URI;
+
     // Connection options
     const options = {
       useNewUrlParser: true,
@@ -14,8 +15,7 @@ const connectDB = async () => {
       maxPoolSize: 10,
       minPoolSize: 2,
       maxIdleTimeMS: 10000,
-      keepAlive: true,
-      keepAliveInitialDelay: 300000
+      
     };
 
     // Connect with retry logic
