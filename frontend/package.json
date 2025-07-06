@@ -19,11 +19,13 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
+  "prepare": "chmod +x ./node_modules/.bin/craco",
   "start": "craco start",
-  "build": "craco build",
+  "build": "npm run prepare && craco build",
   "test": "craco test",
   "eject": "react-scripts eject"
 },
+
   "eslintConfig": {
     "extends": [
       "react-app",
