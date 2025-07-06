@@ -9,6 +9,7 @@ const authMiddleware = require('./middleware/auth');
 const path = require("path");
 const helmet = require("helmet");
 const compression = require("compression");
+const rateLimit = require("express-rate-limit");
 
 // Load environment variables
 dotenv.config();
