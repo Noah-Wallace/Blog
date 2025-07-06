@@ -6,47 +6,76 @@ const { connectDB } = require('./config/database');
 const adminRoutes = require('./routes/admin');
 const authRoutes = require('./routes/auth');
 const authMiddleware = require('./middleware/auth');
+const path = require("path");
 
 // Load environment variables
 dotenv.config();
-console.log('Environment loaded');
+
+// Validate required environment variables
+const requiredEnvVars = ['JWT_SECRET', 'MONGODB_URI', 'ADMIN_USERNAME', 'ADMIN_PASSWORD_HASH'];
+requiredEnvVars.forEach(envVar => {
+  if (!process.env[envVar]) {
+    console.error(`Error: Missing required environment variable: ${envVar}`);
+    process.exit(1);
+  }
+});
 
 const app = express();
 
-// Middleware
+// Security middleware
+app.use(helmet()); // Add security headers
+app.use(compression()); // Compress responses
+
+// CORS configuration
 const corsOptions = {
-  origin: ['http://localhost:3000', process.env.CLIENT_URL].filter(Boolean),
+  origin: [process.env.CLIENT_URL].filter(Boolean),
   credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS']
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
 };
-console.log('Setting up CORS with options:', corsOptions);
 
 app.use(cors(corsOptions));
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.json({ limit: '10kb' })); // Limit payload size
+app.use(express.urlencoded({ extended: true, limit: '10kb' }));
 
 // Import models
 const Contact = require('./models/Contact');
 const Engagement = require('./models/Engagement');
 
-// Routes
-app.use('/api/auth', authRoutes);
+// API Routes
+app.use('/api/auth', rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100 // limit each IP to 100 requests per windowMs
+}), authRoutes);
+
 app.use('/api/admin', authMiddleware, adminRoutes);
 
-// Contact route handler with improved logging
-app.post('/api/contact', async (req, res) => {
-  console.log('Received contact form submission request');
-  console.log('Headers:', req.headers);
-  console.log('Body:', req.body);
-  
+// Contact form endpoint with rate limiting
+const contactLimiter = rateLimit({
+  windowMs: 60 * 60 * 1000, // 1 hour
+  max: 5 // limit each IP to 5 requests per hour
+});
+
+app.post('/api/contact', contactLimiter, async (req, res) => {
   try {
-    // Validate required fields
     const { name, email, subject, message } = req.body;
+    
+    // Input validation
     if (!name || !email || !subject || !message) {
-      console.log('Missing required fields:', { name, email, subject, message });
       return res.status(400).json({ 
-        error: 'Please provide all required fields: name, email, subject, message' 
+        error: 'Missing required fields',
+        details: {
+          name: !name ? 'Name is required' : null,
+          email: !email ? 'Email is required' : null,
+          subject: !subject ? 'Subject is required' : null,
+          message: !message ? 'Message is required' : null
+        }
       });
+    }
+
+    // Email validation
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      return res.status(400).json({ error: 'Invalid email format' });
     }
 
     const contact = new Contact({
@@ -54,22 +83,20 @@ app.post('/api/contact', async (req, res) => {
       email,
       subject,
       message,
-      status: 'unread', // Explicitly set status
-      createdAt: new Date() // Explicitly set creation date
+      status: 'unread',
+      createdAt: new Date()
     });
 
     const savedContact = await contact.save();
-    console.log('Contact saved successfully:', savedContact._id);
-    
     res.status(201).json({
       message: 'Message sent successfully!',
       contactId: savedContact._id
     });
+
   } catch (error) {
     console.error('Contact submission error:', {
       name: error.name,
-      message: error.message,
-      stack: error.stack
+      message: error.message
     });
     
     if (error.name === 'ValidationError') {
@@ -80,13 +107,12 @@ app.post('/api/contact', async (req, res) => {
     }
     
     res.status(500).json({
-      error: 'Failed to send message',
-      details: process.env.NODE_ENV === 'development' ? error.message : 'Internal server error'
+      error: 'Failed to send message'
     });
   }
 });
 
-// Engagement routes
+// Engagement endpoints
 app.post('/api/engagement', async (req, res) => {
   try {
     const engagement = new Engagement(req.body);
@@ -106,20 +132,20 @@ app.get('/api/engagement/:postId', async (req, res) => {
   }
 });
 
-const path = require("path");
-
-// Serve frontend build (for Create React App)
-app.use(express.static(path.join(__dirname, "../frontend/build")));
-
-app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "../frontend/build/index.html"));
-});
+// Serve static files in production
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static(path.join(__dirname, "../frontend/build")));
+  
+  app.get("*", (req, res) => {
+    res.sendFile(path.join(__dirname, "../frontend/build/index.html"));
+  });
+}
 
 // Error handling middleware
 app.use((err, req, res, next) => {
   console.error('Global error handler:', err);
   res.status(500).json({ 
-    error: process.env.NODE_ENV === 'development' ? err.message : 'Internal server error' 
+    error: 'Internal server error'
   });
 });
 
@@ -128,19 +154,31 @@ app.use((req, res) => {
   res.status(404).json({ error: 'Route not found' });
 });
 
-// Async server startup
+// Async server startup with graceful shutdown
 async function startServer() {
+  let server;
   try {
     console.log('Starting server...');
-    // Connect to MongoDB first
     await connectDB();
     
     const PORT = process.env.PORT || 5000;
-    app.listen(PORT, '0.0.0.0', () => {
+    server = app.listen(PORT, '0.0.0.0', () => {
       console.log(`Server is running on port ${PORT}`);
-      console.log(`Server URL: http://localhost:${PORT}`);
       console.log('Ready to accept requests');
     });
+
+    // Graceful shutdown
+    process.on('SIGTERM', () => {
+      console.log('SIGTERM signal received: closing HTTP server');
+      server.close(() => {
+        console.log('HTTP server closed');
+        mongoose.connection.close(false, () => {
+          console.log('MongoDB connection closed');
+          process.exit(0);
+        });
+      });
+    });
+
   } catch (error) {
     console.error('Failed to start server:', error);
     process.exit(1);
