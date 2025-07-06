@@ -1,0 +1,54 @@
+.code-block-pre {
+  border-radius: 0.5rem;
+  padding: 1rem;
+  overflow-x: auto;
+  background: #011627;
+  margin: 1.5rem 0;
+}
+
+.line-number {
+  color: #4a5568;
+  margin-right: 1rem;
+  font-size: 0.875rem;
+  user-select: none;
+  font-family: 'Fira Code', monospace;
+  min-width: 2rem;
+  display: inline-block;
+  text-align: right;
+}
+
+.code-line {
+  display: flex;
+  align-items: center;
+  padding: 0.25rem 0;
+}
+
+.code-line:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.code-content {
+  font-family: 'Fira Code', monospace;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+/* Add a subtle scrollbar for code overflow */
+.code-block-pre::-webkit-scrollbar {
+  height: 8px;
+  width: 8px;
+}
+
+.code-block-pre::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+}
+
+.code-block-pre::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+}
+
+.code-block-pre::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
