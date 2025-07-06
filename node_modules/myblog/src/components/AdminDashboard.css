@@ -1,0 +1,146 @@
+.admin-dashboard {
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.admin-dashboard h1 {
+  color: #e2e8ff;
+  margin-bottom: 2rem;
+  font-family: 'Playfair Display', serif;
+}
+
+.contacts-list {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.contact-card {
+  background: rgba(13, 17, 31, 0.7);
+  backdrop-filter: blur(10px);
+  border-radius: 1rem;
+  border: 1px solid rgba(148, 108, 230, 0.1);
+  padding: 1.5rem;
+  transition: all 0.3s ease;
+}
+
+.contact-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 20px rgba(88, 103, 221, 0.15);
+}
+
+.contact-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.contact-header h3 {
+  color: #e2e8ff;
+  font-size: 1.2rem;
+  margin: 0;
+}
+
+.contact-date {
+  color: #94a3b8;
+  font-size: 0.9rem;
+}
+
+.contact-info {
+  margin-bottom: 1.5rem;
+}
+
+.contact-info p {
+  color: #cbd5e1;
+  margin: 0.5rem 0;
+}
+
+.contact-message {
+  white-space: pre-wrap;
+  padding: 1rem;
+  background: rgba(148, 108, 230, 0.05);
+  border-radius: 0.5rem;
+  margin-top: 1rem !important;
+}
+
+.contact-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.status-select {
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  border: 1px solid rgba(148, 108, 230, 0.2);
+  background: rgba(13, 17, 31, 0.7);
+  color: #e2e8ff;
+  cursor: pointer;
+}
+
+.status-unread {
+  border-left: 4px solid #ef4444;
+}
+
+.status-read {
+  border-left: 4px solid #3b82f6;
+}
+
+.status-responded {
+  border-left: 4px solid #22c55e;
+}
+
+.delete-button {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 0.5rem;
+  background: #dc2626;
+  color: white;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.delete-button:hover {
+  background: #b91c1c;
+}
+
+.admin-loading {
+  text-align: center;
+  padding: 2rem;
+  color: #e2e8ff;
+}
+
+.admin-error {
+  text-align: center;
+  padding: 2rem;
+  color: #ef4444;
+  background: rgba(239, 68, 68, 0.1);
+  border-radius: 0.5rem;
+}
+
+.no-contacts {
+  text-align: center;
+  padding: 2rem;
+  color: #94a3b8;
+  background: rgba(148, 108, 230, 0.05);
+  border-radius: 0.5rem;
+}
+
+@media (max-width: 768px) {
+  .admin-dashboard {
+    padding: 1rem;
+  }
+  
+  .contact-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+  
+  .contact-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}

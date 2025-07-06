@@ -1,0 +1,112 @@
+/* General wrapper for content */
+.content-wrapper {
+  width: min(100% - 2rem, 1400px);
+  margin-inline: auto;
+  margin-block: clamp(4rem, 8vh, 6rem) 2rem;
+  padding-inline: max(1rem, calc((100vw - 1400px) / 2));
+  min-height: calc(100vh - var(--footer-height, 60px));
+  overflow-x: hidden;
+}
+
+/* Responsive grid layout */
+.main-content {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+  gap: clamp(1rem, 2vw, 2rem);
+}
+
+/* Enhanced responsiveness for tablets and up */
+@media (min-width: 768px) {
+  .main-content {
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  }
+}
+
+/* Adjust layout for small mobile screens like iPhone SE */
+@media (max-width: 480px) {
+  .content-wrapper {
+    width: 100%;
+    padding-inline: 1rem;
+    margin-block: 2rem 1rem;
+  }
+
+  .main-content {
+    gap: 1rem;
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Further refine layout for medium smartphones (Samsung Galaxy, iPhone) */
+@media (min-width: 481px) and (max-width: 767px) {
+  .main-content {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Vertical orientation (e.g., tablets and phones in portrait) */
+@media (orientation: portrait) and (max-height: 768px) {
+  .content-wrapper {
+    margin-block: clamp(3rem, 5vh, 4rem) 1.5rem;
+  }
+}
+
+/* Content section style */
+.content-section {
+  container-type: inline-size;
+  width: 100%;
+  background: #ffffff;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  padding: 1.5rem;
+  box-sizing: border-box;
+}
+
+/* Content section variations */
+.content-section.featured-section {
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+  color: #fff;
+  margin-bottom: 2rem;
+  padding: clamp(1.5rem, 3vw, 2.5rem);
+}
+
+.content-section.latest-posts-section {
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.latest-posts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr));
+  gap: clamp(1rem, 2vw, 1.5rem);
+}
+
+/* Mobile optimizations */
+@media (max-width: 768px) {
+  .latest-posts-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .content-section.featured-section {
+    padding: 1rem;
+    margin-bottom: 1rem;
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  .latest-posts-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Section headers */
+.section-header {
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  margin-bottom: clamp(1rem, 2vw, 1.5rem);
+  color: #1a1a2e;
+}
+
+.featured-section .section-header {
+  color: #fff;
+}
