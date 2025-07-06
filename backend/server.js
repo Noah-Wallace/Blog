@@ -106,6 +106,15 @@ app.get('/api/engagement/:postId', async (req, res) => {
   }
 });
 
+const path = require("path");
+
+// Serve frontend build (for Create React App)
+app.use(express.static(path.join(__dirname, "../frontend/build")));
+
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "../frontend/build/index.html"));
+});
+
 // Error handling middleware
 app.use((err, req, res, next) => {
   console.error('Global error handler:', err);

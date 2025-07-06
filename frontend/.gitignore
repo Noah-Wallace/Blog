@@ -6,3 +6,4 @@ JWT_SECRET=your-secret-key-change-in-production
 ADMIN_USERNAME=admin
 # This is a bcrypt hash for password "admin123" - change in production
 ADMIN_PASSWORD_HASH=$2a$10$YourHashHere
+BACKEND_URL=http://localhost:5000

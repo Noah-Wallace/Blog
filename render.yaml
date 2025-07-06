@@ -1,0 +1,12 @@
+services:
+  - type: web
+    name: blog-backend
+    env: node
+    buildCommand: |
+      cd backend && npm install
+      cd ../frontend && npm install && npm run build
+    startCommand: cd backend && node server.js
+    envVars:
+      - key: MONGODB_URI
+        value: mongodb+srv://noahwallace9044:dcSy1eA8qgQNft2s@cluster0.r6iy5x5.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
+
