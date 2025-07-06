@@ -6,16 +6,14 @@ const connectDB = async () => {
     const uri = process.env.MONGO_URI;
 
     // Connection options
+    // Modern Mongoose: no need for useNewUrlParser or useUnifiedTopology
     const options = {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
       serverSelectionTimeoutMS: 5000,
       socketTimeoutMS: 45000,
       connectTimeoutMS: 10000,
       maxPoolSize: 10,
       minPoolSize: 2,
-      maxIdleTimeMS: 10000,
-      
+      maxIdleTimeMS: 10000
     };
 
     // Connect with retry logic
