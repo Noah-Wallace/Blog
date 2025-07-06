@@ -22,7 +22,7 @@ const connectDB = async () => {
     let retries = 3;
     while (retries > 0) {
       try {
-        const conn = await mongoose.connect(process.env.MONGODB_URI, options);
+        const conn = await mongoose.connect(process.env.MONGO_URI || process.env.MONGODB_URI, options);
         console.log(`MongoDB Connected: ${conn.connection.host}`);
         
         // Set up connection error handlers
