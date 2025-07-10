@@ -6,8 +6,8 @@ dotenv.config();
 async function testContactSubmission() {
     try {
         // Connect to MongoDB
-        console.log('Connecting to:', process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/space-blog');
-        await mongoose.connect(process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/space-blog');
+        console.log('Connecting to:', process.env.MONGODB_URI);
+        await mongoose.connect(process.env.MONGODB_URI); //|| 'mongodb://127.0.0.1:27017/space-blog');
         
         // Get the Contact model
         const Contact = require('./models/Contact');

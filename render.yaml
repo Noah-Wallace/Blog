@@ -12,3 +12,9 @@ services:
     envVars:
       - key: MONGODB_URI
         value: mongodb+srv://noahwallace9044:xMQe4Rdt%403E.tXb@cluster0.r6iy5x5.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
+      - key: JWT_SECRET
+        value: 7cd4c2c31f67b1461df197f2031b8913
+      - key: ADMIN_USERNAME
+        value: admin
+      - key: ADMIN_PASSWORD_HASH
+        value: $2b$10$uu.mQC6bzFlsoiT2eHtFNOGs7I05THc0JvWI3ZH7D8UQs.NELJKH.
