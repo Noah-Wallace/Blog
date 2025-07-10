@@ -5,7 +5,7 @@
 
   
   "dependencies": {
-    "@craco/craco": "^7.1.0",                
+    "@craco/craco": "^7.1.0",
     "@tailwindcss/typography": "^0.5.16",
     "@testing-library/dom": "^10.4.0",
     "@testing-library/jest-dom": "^6.6.3",
@@ -28,7 +28,7 @@
   "scripts": {
     "start": "craco start",
     "build": "node ./node_modules/@craco/craco/bin/craco.js build",
-    "test":  "node ./node_modules/@craco/craco/bin/craco.js test",
+    "test": "node ./node_modules/@craco/craco/bin/craco.js test",
     "eject": "react-scripts eject"
   },
 
@@ -42,9 +42,8 @@
     "development": ["last 1 chrome version", "last 1 firefox version", "last 1 safari version"]
   },
 
-
+  
   "engines": {
-  "node": "20.x"
-}
-
+    "node": "20.x"
+  }
 }
