@@ -10,7 +10,6 @@ import ErrorFallback from './components/ErrorFallback';
 import './styles/critical.css';
 import './styles/responsive.css';
 
-// Lazy load components for better performance
 const BlogPost = lazy(() => import('./components/BlogPost'));
 const BlogPostView = lazy(() => import('./components/BlogPostView'));
 const Footer = lazy(() => import('./components/Footer'));
@@ -35,14 +34,13 @@ function App() {
         setIsLoading(false);
       }
     };
-
     loadPosts();
   }, []);
 
   if (isLoading) return <LoadingSpinner />;
   if (error) return <ErrorFallback error={error} />;
 
-  const [featuredPost, ...remainingPosts] = posts;
+  const [featuredPost, ...remainingPosts] = posts.length ? posts : [null];
 
   return (
     <Router>
@@ -60,15 +58,23 @@ function App() {
                       <section className="posts-section1">
                         <h2 className="section-title1">Featured Post</h2>
                         <div className="featured-post">
-                          <BlogPost {...featuredPost} />
+                          {featuredPost ? (
+                            <BlogPost {...featuredPost} />
+                          ) : (
+                            <p>No featured post available.</p>
+                          )}
                         </div>
                       </section>
                       <section className="posts-section2">
                         <h2 className="section-title2">Latest Posts</h2>
                         <div className="posts-grid">
-                          {remainingPosts.map(post => (
-                            <BlogPost key={post.id} {...post} />
-                          ))}
+                          {remainingPosts.length > 0 ? (
+                            remainingPosts.map(post => (
+                              <BlogPost key={post.id} {...post} />
+                            ))
+                          ) : (
+                            <p>No posts available.</p>
+                          )}
                         </div>
                       </section>
                     </section>
