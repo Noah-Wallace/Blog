@@ -2,6 +2,7 @@
   "name": "myblog",
   "version": "0.1.0",
   "private": true,
+  "homepage": ".",
   "dependencies": {
     "@tailwindcss/typography": "^0.5.16",
     "prism-react-renderer": "^2.4.1",
