@@ -3,10 +3,12 @@ services:
     name: blog-backend
     env: node
 
+    # --- build ---
     buildCommand: |
-      npm install
-      cd frontend && npm install && npm run build
+      cd backend && npm install
+      cd ../frontend && npm install && npm run build
 
+    # --- start ---
     startCommand: cd backend && node server.js
 
     envVars:
@@ -17,4 +19,4 @@ services:
       - key: ADMIN_USERNAME
         value: admin
       - key: ADMIN_PASSWORD_HASH
-        value: $2b$10$uu.mQC6bzFlsoiT2eHtFNOGs7I05THc0JvWI3ZH7D8UQs.NELJKH.
+        value: $2b$10$uu.mQC6bzFlsoiT2eHtFNOGs7I05THc0JvWI3ZH7D8UQs.NELJKH

@@ -2,7 +2,10 @@
   "name": "myblog",
   "version": "0.1.0",
   "private": true,
+
+  
   "dependencies": {
+    "@craco/craco": "^7.1.0",                
     "@tailwindcss/typography": "^0.5.16",
     "@testing-library/dom": "^10.4.0",
     "@testing-library/jest-dom": "^6.6.3",
@@ -20,34 +23,27 @@
     "tailwindcss": "^4.1.8",
     "web-vitals": "^2.1.4"
   },
+
+  
   "scripts": {
     "start": "craco start",
-    "build": "npx craco build",
-    "test": "craco test",
+    "build": "node ./node_modules/@craco/craco/bin/craco.js build",
+    "test":  "node ./node_modules/@craco/craco/bin/craco.js test",
     "eject": "react-scripts eject"
   },
+
+  
   "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
+    "extends": ["react-app", "react-app/jest"]
   },
+
   "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
+    "production": [">0.2%", "not dead", "not op_mini all"],
+    "development": ["last 1 chrome version", "last 1 firefox version", "last 1 safari version"]
   },
-  "devDependencies": {
-    "@craco/craco": "^7.1.0",
-    "autoprefixer": "^10.4.21",
-    "postcss": "^8.5.3",
-    "tailwindcss": "^4.1.8"
+
+
+  "engines": {
+    "node": ">=18 <22"
   }
 }
