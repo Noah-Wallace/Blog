@@ -11,7 +11,7 @@ services:
 
     envVars:
       - key: MONGODB_URI
-        value: mongodb+srv://noahwallace9044:xMQe4Rdt%403E.tXb@cluster0.r6iy5x5.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
+        value: mongodb+srv://noahwallace9044:SugdurfQUBOoVyXF@cluster0.r6iy5x5.mongodb.net/space-blog?retryWrites=true&w=majority&appName=Cluster0
       - key: JWT_SECRET
         value: 7cd4c2c31f67b1461df197f2031b8913
       - key: ADMIN_USERNAME
