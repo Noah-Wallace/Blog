@@ -1,18 +1,18 @@
 {
-  "short_name": "Space Blog",
-  "name": "Space Tech Blog",
+  "short_name": "Space Blog",
+  "name": "Space Tech Blog",
   "description": "A modern blog about space technology, exploration, and innovation",
   "icons": [
     {
       "src": "sparkles.png",
-      "type": "image/png",
       "sizes": "192x192",
+      "type": "image/png",
       "purpose": "any maskable"
     },
     {
       "src": "sparkles.png",
-      "type": "image/png",
       "sizes": "512x512",
+      "type": "image/png",
       "purpose": "any maskable"
     }
   ],
