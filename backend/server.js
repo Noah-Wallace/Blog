@@ -62,12 +62,14 @@ app.get('/api/posts', async (req, res) => {
 });
 
 // API Routes
-app.use('/api/auth', rateLimit({
+const apiLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
   max: 100 // limit each IP to 100 requests per windowMs
-}), authRoutes);
+});
 
-app.use('/api/admin', authMiddleware, adminRoutes);
+// Mount routes with proper middleware
+app.use('/api/auth', apiLimiter, authRoutes);
+app.use('/api/admin', apiLimiter, authMiddleware, adminRoutes);
 
 // Contact form endpoint with rate limiting
 const contactLimiter = rateLimit({
