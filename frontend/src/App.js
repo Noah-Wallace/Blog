@@ -1,136 +1,186 @@
+import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { Suspense, lazy, useState, useEffect } from 'react';
-import { ErrorBoundary } from 'react-error-boundary';
-import { getAllPosts } from './posts';
-import Navbar from './components/Navbar';
-import HeroSection from './components/HeroSection';
-import BackToTop from './components/BackToTop';
-import LoadingSpinner from './components/LoadingSpinner';
-import ErrorFallback from './components/ErrorFallback';
-import './styles/critical.css';
-import './styles/responsive.css';
+import './App.css';
 
-const BlogPost = lazy(() => import('./components/BlogPost'));
-const BlogPostView = lazy(() => import('./components/BlogPostView'));
-const Footer = lazy(() => import('./components/Footer'));
-const About = lazy(() => import('./components/About'));
-const Contact = lazy(() => import('./components/Contact'));
-const AdminDashboard = lazy(() => import('./components/AdminDashboard'));
-const Login = lazy(() => import('./components/Login'));
+// Error Boundary Component
+class ErrorBoundary extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { hasError: false, error: null };
+  }
 
+  static getDerivedStateFromError(error) {
+    return { hasError: true, error };
+  }
+
+  componentDidCatch(error, errorInfo) {
+    console.error('React Error Boundary caught an error:', error, errorInfo);
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return (
+        <div style={{ padding: '20px', textAlign: 'center' }}>
+          <h2>Something went wrong.</h2>
+          <p>Please refresh the page or try again later.</p>
+          <button onClick={() => window.location.reload()}>
+            Refresh Page
+          </button>
+        </div>
+      );
+    }
+
+    return this.props.children;
+  }
+}
+
+// Loading Component
+const Loading = () => (
+  <div style={{ 
+    display: 'flex', 
+    justifyContent: 'center', 
+    alignItems: 'center', 
+    height: '100vh' 
+  }}>
+    <div>Loading...</div>
+  </div>
+);
+
+// Main App Component
 function App() {
   const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState(null);
   const [posts, setPosts] = useState([]);
+  const [error, setError] = useState(null);
+
+  // API URL from environment variable
+  const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
 
   useEffect(() => {
-    const loadPosts = async () => {
+    const fetchPosts = async () => {
       try {
-        const allPosts = getAllPosts();
-        setPosts(allPosts);
+        setIsLoading(true);
+        setError(null);
+        
+        const response = await fetch(`${API_URL}/api/posts`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        setPosts(data);
       } catch (err) {
+        console.error('Error fetching posts:', err);
         setError(err.message);
       } finally {
         setIsLoading(false);
       }
     };
-    loadPosts();
-  }, []);
 
-  if (isLoading) return <LoadingSpinner />;
-  if (error) return <ErrorFallback error={error} />;
+    fetchPosts();
+  }, [API_URL]);
 
-  const [featuredPost, ...remainingPosts] = posts.length ? posts : [null];
+  if (isLoading) {
+    return <Loading />;
+  }
+
+  if (error) {
+    return (
+      <div style={{ padding: '20px', textAlign: 'center' }}>
+        <h2>Connection Error</h2>
+        <p>Unable to connect to the server: {error}</p>
+        <button onClick={() => window.location.reload()}>
+          Try Again
+        </button>
+      </div>
+    );
+  }
 
   return (
-    <Router>
-      <ErrorBoundary FallbackComponent={ErrorFallback}>
-        <Suspense fallback={<LoadingSpinner />}>
-          <Routes>
-            <Route
-              path="/"
-              element={
-                <div className="main-container">
-                  <Navbar />
-                  <HeroSection />
-                  <main className="content-wrapper">
-                    <section className="posts">
-                      <section className="posts-section1">
-                        <h2 className="section-title1">Featured Post</h2>
-                        <div className="featured-post">
-                          {featuredPost ? (
-                            <BlogPost {...featuredPost} />
-                          ) : (
-                            <p>No featured post available.</p>
-                          )}
-                        </div>
-                      </section>
-                      <section className="posts-section2">
-                        <h2 className="section-title2">Latest Posts</h2>
-                        <div className="posts-grid">
-                          {remainingPosts.length > 0 ? (
-                            remainingPosts.map(post => (
-                              <BlogPost key={post.id} {...post} />
-                            ))
-                          ) : (
-                            <p>No posts available.</p>
-                          )}
-                        </div>
-                      </section>
-                    </section>
-                  </main>
-                  <Footer />
-                  <BackToTop />
-                </div>
-              }
-            />
-            <Route
-              path="/post/:id"
-              element={
-                <>
-                  <Navbar />
-                  <BlogPostView />
-                  <Footer />
-                  <BackToTop />
-                </>
-              }
-            />
-            <Route path="/about" element={
-              <>
-                <Navbar />
-                <About />
-                <Footer />
-                <BackToTop />
-              </>
-            } />
-            <Route path="/login" element={<Login />} />
-            <Route
-              path="/admin"
-              element={
-                <>
-                  <Navbar />
-                  <AdminDashboard />
-                  <Footer />
-                  <BackToTop />
-                </>
-              }
-            />
-            <Route
-              path="/contact"
-              element={
-                <>
-                  <Navbar />
-                  <Contact />
-                  <Footer />
-                  <BackToTop />
-                </>
-              }
-            />
-          </Routes>
-        </Suspense>
-      </ErrorBoundary>
-    </Router>
+    <ErrorBoundary>
+      <Router>
+        <div className="App">
+          <header className="App-header">
+            <h1>Space Tech Blog</h1>
+            <nav>
+              <a href="/">Home</a>
+              <a href="/about">About</a>
+              <a href="/contact">Contact</a>
+            </nav>
+          </header>
+
+          <main>
+            <Routes>
+              <Route path="/" element={<Home posts={posts} />} />
+              <Route path="/about" element={<About />} />
+              <Route path="/contact" element={<Contact />} />
+              <Route path="/post/:id" element={<PostDetail />} />
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </main>
+
+          <footer>
+            <p>&copy; 2024 Space Tech Blog</p>
+          </footer>
+        </div>
+      </Router>
+    </ErrorBoundary>
   );
 }
+
+// Home Component
+const Home = ({ posts }) => (
+  <div>
+    <h2>Latest Posts</h2>
+    {posts.length === 0 ? (
+      <p>No posts available.</p>
+    ) : (
+      posts.map(post => (
+        <div key={post._id} style={{ marginBottom: '20px', padding: '10px', border: '1px solid #ccc' }}>
+          <h3>{post.title}</h3>
+          <p>{post.excerpt}</p>
+          <a href={`/post/${post._id}`}>Read More</a>
+        </div>
+      ))
+    )}
+  </div>
+);
+
+// About Component
+const About = () => (
+  <div>
+    <h2>About</h2>
+    <p>Welcome to our Space Tech Blog!</p>
+  </div>
+);
+
+// Contact Component
+const Contact = () => (
+  <div>
+    <h2>Contact</h2>
+    <p>Get in touch with us!</p>
+  </div>
+);
+
+// Post Detail Component
+const PostDetail = () => (
+  <div>
+    <h2>Post Details</h2>
+    <p>Post content will be displayed here.</p>
+  </div>
+);
+
+// Not Found Component
+const NotFound = () => (
+  <div>
+    <h2>404 - Page Not Found</h2>
+    <p>The page you're looking for doesn't exist.</p>
+  </div>
+);
 
 export default App;
