@@ -63,10 +63,9 @@ apiRouter.use('/auth', authRoutes);
 apiRouter.use('/admin', authMiddleware, adminRoutes);
 
 // Posts endpoints
-app.get('/api/posts', async (req, res) => {
+apiRouter.get('/posts', async (req, res) => {
   try {
-    // Get posts from your posts directory
-    const posts = require('./posts') || [];
+    const posts = require('../shared/posts-data.js');
     res.json(posts);
   } catch (error) {
     console.error('Error fetching posts:', error);
@@ -74,15 +73,14 @@ app.get('/api/posts', async (req, res) => {
   }
 });
 
-// API Routes
+// Rate limiting middleware
 const apiLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
   max: 100 // limit each IP to 100 requests per windowMs
 });
 
-// Mount routes with proper middleware
-app.use('/api/auth', apiLimiter, authRoutes);
-app.use('/api/admin', apiLimiter, authMiddleware, adminRoutes);
+// Apply rate limiting to all API routes
+apiRouter.use(apiLimiter);
 
 // Contact form endpoint with rate limiting
 const contactLimiter = rateLimit({
@@ -90,7 +88,7 @@ const contactLimiter = rateLimit({
   max: 5 // limit each IP to 5 requests per hour
 });
 
-app.post('/api/contact', contactLimiter, async (req, res) => {
+apiRouter.post('/contact', contactLimiter, async (req, res) => {
   try {
     const { name, email, subject, message } = req.body;
     
@@ -147,7 +145,7 @@ app.post('/api/contact', contactLimiter, async (req, res) => {
 });
 
 // Engagement endpoints
-app.post('/api/engagement', async (req, res) => {
+apiRouter.post('/engagement', async (req, res) => {
   try {
     const engagement = new Engagement(req.body);
     await engagement.save();
@@ -157,7 +155,7 @@ app.post('/api/engagement', async (req, res) => {
   }
 });
 
-app.get('/api/engagement/:postId', async (req, res) => {
+apiRouter.get('/engagement/:postId', async (req, res) => {
   try {
     const engagements = await Engagement.find({ postId: req.params.postId });
     res.json(engagements);
