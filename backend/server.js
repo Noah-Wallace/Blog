@@ -41,13 +41,26 @@ const corsOptions = {
   allowedHeaders: ['Content-Type', 'Authorization']
 };
 
+// Apply CORS
 app.use(cors(corsOptions));
-app.use(express.json({ limit: '10kb' })); // Limit payload size
+
+// Body parsing middleware
+app.use(express.json({ limit: '10kb' }));
 app.use(express.urlencoded({ extended: true, limit: '10kb' }));
 
 // Import models
 const Contact = require('./models/Contact');
 const Engagement = require('./models/Engagement');
+
+// Base API routes
+const apiRouter = express.Router();
+app.use('/api', apiRouter);
+
+// Auth routes
+apiRouter.use('/auth', authRoutes);
+
+// Admin routes (protected by auth middleware)
+apiRouter.use('/admin', authMiddleware, adminRoutes);
 
 // Posts endpoints
 app.get('/api/posts', async (req, res) => {
