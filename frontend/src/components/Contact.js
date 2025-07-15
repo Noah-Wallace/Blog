@@ -19,7 +19,7 @@ function Contact() {
     setStatus({ submitting: true, submitted: false, error: null });
     
     try {
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/contact`, {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/contact`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

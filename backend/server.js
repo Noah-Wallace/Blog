@@ -31,7 +31,11 @@ app.use(compression()); // Compress responses
 
 // CORS configuration
 const corsOptions = {
-  origin: [process.env.CLIENT_URL].filter(Boolean),
+  origin: [
+    process.env.CLIENT_URL,
+    'https://blog-1-osgy.onrender.com',
+    'http://localhost:3000'
+  ].filter(Boolean),
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization']
