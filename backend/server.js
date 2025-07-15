@@ -11,6 +11,27 @@ const helmet = require("helmet");
 const compression = require("compression");
 const rateLimit = require("express-rate-limit");
 
+// Custom middleware for handling static files
+const staticFileMiddleware = (req, res, next) => {
+  const ext = path.extname(req.path).toLowerCase();
+  const mimeTypes = {
+    '.html': 'text/html',
+    '.js': 'application/javascript',
+    '.css': 'text/css',
+    '.json': 'application/json',
+    '.png': 'image/png',
+    '.jpg': 'image/jpeg',
+    '.gif': 'image/gif',
+    '.svg': 'image/svg+xml',
+    '.ico': 'image/x-icon',
+  };
+
+  if (mimeTypes[ext]) {
+    res.type(mimeTypes[ext]);
+  }
+  next();
+};
+
 // Load environment variables
 dotenv.config();
 
@@ -166,8 +187,21 @@ apiRouter.get('/engagement/:postId', async (req, res) => {
 
 // Serve static files in production
 if (process.env.NODE_ENV === 'production') {
-  app.use(express.static(path.join(__dirname, "../frontend/build")));
+  // Apply static file middleware
+  app.use(staticFileMiddleware);
   
+  // Serve static files
+  app.use(express.static(path.join(__dirname, "../frontend/build"), {
+    maxAge: '1y',
+    etag: true
+  }));
+
+  // Serve other static assets
+  app.get('/static/*', (req, res) => {
+    res.sendFile(path.join(__dirname, "../frontend/build", req.path));
+  });
+
+  // Handle all other routes by serving index.html
   app.get("*", (req, res) => {
     res.sendFile(path.join(__dirname, "../frontend/build/index.html"));
   });

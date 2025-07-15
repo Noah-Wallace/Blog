@@ -4,13 +4,13 @@
   "description": "A modern blog about space technology, exploration, and innovation",
   "icons": [
     {
-      "src": "sparkles.png",
+      "src": "/sparkles.png",
       "type": "image/png",
       "sizes": "192x192",
       "purpose": "any maskable"
     },
     {
-      "src": "sparkles.png",
+      "src": "/sparkles.png",
       "type": "image/png",
       "sizes": "512x512",
       "purpose": "any maskable"
