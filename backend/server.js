@@ -52,14 +52,23 @@ app.use(compression()); // Compress responses
 
 // CORS configuration
 const corsOptions = {
-  origin: [
-    process.env.CLIENT_URL,
-    'https://blog-1-osgy.onrender.com',
-    'http://localhost:3000'
-  ].filter(Boolean),
+  origin: function(origin, callback) {
+    const allowedOrigins = [
+      process.env.CLIENT_URL,
+      'https://blog-1-osgy.onrender.com',
+      'http://localhost:3000'
+    ].filter(Boolean);
+    
+    if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization']
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  exposedHeaders: ['Content-Length', 'Content-Type']
 };
 
 // Apply CORS
@@ -84,13 +93,31 @@ apiRouter.use('/auth', authRoutes);
 apiRouter.use('/admin', authMiddleware, adminRoutes);
 
 // Posts endpoints
-apiRouter.get('/posts', async (req, res) => {
+apiRouter.get('/posts', (req, res) => {
   try {
-    const posts = require('../shared/posts-data.js');
-    res.json(posts);
+    const posts = require('./data/posts-data.js');
+    res.json(posts || []);
   } catch (error) {
     console.error('Error fetching posts:', error);
-    res.status(500).json({ error: 'Failed to fetch posts' });
+    res.status(500).json({ 
+      error: 'Failed to fetch posts',
+      details: error.message 
+    });
+  }
+});
+
+// Get single post by ID
+apiRouter.get('/posts/:id', async (req, res) => {
+  try {
+    const posts = require('./data/posts.js');
+    const post = posts.find(p => p.id === parseInt(req.params.id));
+    if (!post) {
+      return res.status(404).json({ error: 'Post not found' });
+    }
+    res.json(post);
+  } catch (error) {
+    console.error('Error fetching post:', error);
+    res.status(500).json({ error: 'Failed to fetch post' });
   }
 });
 
@@ -187,13 +214,22 @@ apiRouter.get('/engagement/:postId', async (req, res) => {
 
 // Serve static files in production
 if (process.env.NODE_ENV === 'production') {
-  // Apply static file middleware
-  app.use(staticFileMiddleware);
-  
   // Serve static files
   app.use(express.static(path.join(__dirname, "../frontend/build"), {
-    maxAge: '1y',
-    etag: true
+    maxAge: '1d',
+    etag: true,
+    setHeaders: (res, path) => {
+      // Set proper content type for manifest.json
+      if (path.endsWith('.json')) {
+        res.set('Content-Type', 'application/json');
+      }
+      // Set proper content type for images
+      if (path.endsWith('.png')) {
+        res.set('Content-Type', 'image/png');
+      }
+      // Set CORS headers for static files
+      res.set('Access-Control-Allow-Origin', '*');
+    }
   }));
 
   // Serve other static assets
@@ -209,9 +245,15 @@ if (process.env.NODE_ENV === 'production') {
 
 // Error handling middleware
 app.use((err, req, res, next) => {
-  console.error('Global error handler:', err);
-  res.status(500).json({ 
-    error: 'Internal server error'
+  console.error('Global error handler:', {
+    message: err.message,
+    stack: err.stack,
+    path: req.path
+  });
+  
+  res.status(err.status || 500).json({ 
+    error: err.message || 'Internal server error',
+    path: req.path
   });
 });
 
