@@ -247,7 +247,7 @@ body::before {
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.5)), url('../assets/space-bg.jpg');
+  background: linear-gradient(rgba(255, 255, 255, 0.884), rgba(0, 0, 0, 0.5)), url('../assets/space-bg.jpg');
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
