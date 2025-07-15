@@ -61,7 +61,7 @@ function App() {
         setIsLoading(true);
         setError(null);
         
-        const response = await fetch(`${API_URL}/api/posts`, {
+        const response = await fetch(`${API_URL}/posts`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',

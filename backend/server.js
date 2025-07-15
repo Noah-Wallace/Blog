@@ -49,6 +49,18 @@ app.use(express.urlencoded({ extended: true, limit: '10kb' }));
 const Contact = require('./models/Contact');
 const Engagement = require('./models/Engagement');
 
+// Posts endpoints
+app.get('/api/posts', async (req, res) => {
+  try {
+    // Get posts from your posts directory
+    const posts = require('./posts') || [];
+    res.json(posts);
+  } catch (error) {
+    console.error('Error fetching posts:', error);
+    res.status(500).json({ error: 'Failed to fetch posts' });
+  }
+});
+
 // API Routes
 app.use('/api/auth', rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
