@@ -1,5 +1,6 @@
 // Define posts array
-const posts = [
+// Array of blog posts
+module.exports = [
   {
     id: "0",
     title: "Space Architecture: Designing Homes Among the Stars",
@@ -12,7 +13,7 @@ const posts = [
     category: "Space Technology"
   },
   {
-    id: 1,
+    id: "1",
     title: "The Future of Space Travel",
     content: "The future of space travel is being shaped by groundbreaking technologies...",
     date: "2025-07-15",
@@ -23,7 +24,7 @@ const posts = [
     category: "Space Technology"
   },
   {
-    id: 2,
+    id: "2",
     title: "Space Microservices: Building Reliable Systems",
     content: "In the realm of space technology, reliability is paramount...",
     date: "2025-07-14",

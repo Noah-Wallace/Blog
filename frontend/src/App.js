@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import './App.css';
+import './components/Posts.css';
 
 // Error Boundary Component
 class ErrorBoundary extends React.Component {
@@ -89,15 +90,37 @@ function App() {
     return <Loading />;
   }
 
-  if (error) {
-    return (
-      <div style={{ padding: '20px', textAlign: 'center' }}>
-        <h2>Connection Error</h2>
-        <p>Unable to connect to the server: {error}</p>
-        <button onClick={() => window.location.reload()}>
-          Try Again
-        </button>
-      </div>
+  return (
+    <ErrorBoundary>
+      <Router>
+        <div className="app">
+          <nav>
+            <ul>
+              <li><a href="/">Home</a></li>
+              <li><a href="/about">About</a></li>
+              <li><a href="/contact">Contact</a></li>
+            </ul>
+          </nav>
+
+          {error ? (
+            <div style={{ padding: '20px', textAlign: 'center' }}>
+              <h2>Connection Error</h2>
+              <p>Unable to connect to the server: {error}</p>
+              <button onClick={() => window.location.reload()}>
+                Try Again
+              </button>
+            </div>
+          ) : (
+            <Routes>
+              <Route path="/" element={<Home posts={posts} />} />
+              <Route path="/about" element={<About />} />
+              <Route path="/contact" element={<Contact />} />
+              <Route path="/post/:id" element={<BlogPost posts={posts} />} />
+            </Routes>
+          )}
+        </div>
+      </Router>
+    </ErrorBoundary>
     );
   }
 
@@ -134,22 +157,39 @@ function App() {
 }
 
 // Home Component
-const Home = ({ posts }) => (
-  <div>
-    <h2>Latest Posts</h2>
-    {!Array.isArray(posts) || posts.length === 0 ? (
-      <p>No posts available.</p>
-    ) : (
-      posts.map(post => (
-        <div key={post.id} style={{ marginBottom: '20px', padding: '10px', border: '1px solid #ccc' }}>
-          <h3>{post.title}</h3>
-          <p>{post.excerpt}</p>
-          <a href={`/post/${post.id}`}>Read More</a>
-        </div>
-      ))
-    )}
-  </div>
-);
+const Home = ({ posts }) => {
+  if (!posts || !Array.isArray(posts)) {
+    return (
+      <div style={{ padding: '20px', textAlign: 'center' }}>
+        <p>No posts available.</p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="posts-container">
+      <h1>Latest Posts</h1>
+      <div className="posts-grid">
+        {posts.map(post => (
+          <div key={post.id} className="post-card">
+            <div className="post-image">
+              <img src={post.imageUrl} alt={post.title} />
+            </div>
+            <div className="post-content">
+              <h2>{post.title}</h2>
+              <p className="post-excerpt">{post.excerpt}</p>
+              <div className="post-meta">
+                <span className="post-date">{new Date(post.date).toLocaleDateString()}</span>
+                <span className="post-author">By {post.author}</span>
+              </div>
+              <a href={`/post/${post.id}`} className="read-more">Read More</a>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
 
 // About Component
 const About = () => (
