@@ -1,18 +1,31 @@
 {
-  "name": "blog-frontend",
+  "name": "myblog",
   "version": "0.1.0",
   "private": true,
+  "homepage": ".",
   "dependencies": {
+    "@tailwindcss/typography": "^0.5.16",
+    "prism-react-renderer": "^2.4.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-router-dom": "^6.8.0",
-    "react-scripts": "5.0.1"
+    "react-helmet": "^6.1.0",
+    "react-router-dom": "^6.22.1",
+    "react-scripts": "5.0.1",
+    "web-vitals": "^2.1.4"
+  },
+  "devDependencies": {
+    "@craco/craco": "^7.1.0",
+    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/react": "^16.3.0",
+    "@testing-library/user-event": "^13.5.0",
+    "autoprefixer": "^10.4.21",
+    "postcss": "^8.4.38",
+    "tailwindcss": "^3.4.4"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "CI=false react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "start": "craco start",
+    "build": "craco build",
+    "test": "craco test"
   },
   "eslintConfig": {
     "extends": [
@@ -23,8 +36,7 @@
   "browserslist": {
     "production": [
       ">0.2%",
-      "not dead",
-      "not op_mini all"
+      "not dead"
     ],
     "development": [
       "last 1 chrome version",
