@@ -95,10 +95,22 @@ apiRouter.use('/admin', authMiddleware, adminRoutes);
 // Posts endpoints
 apiRouter.get('/posts', (req, res) => {
   try {
-    const posts = require('./data/posts-data.js');
-    res.json(posts || []);
+    let posts;
+    try {
+      posts = require('./data/posts-data.js');
+    } catch (err) {
+      console.error('Error loading posts module:', err);
+      posts = [];
+    }
+    
+    if (!Array.isArray(posts)) {
+      console.error('Posts data is not an array:', posts);
+      posts = [];
+    }
+    
+    res.json(posts);
   } catch (error) {
-    console.error('Error fetching posts:', error);
+    console.error('Error in /posts endpoint:', error);
     res.status(500).json({ 
       error: 'Failed to fetch posts',
       details: error.message 
@@ -276,15 +288,18 @@ async function startServer() {
     });
 
     // Graceful shutdown
-    process.on('SIGTERM', () => {
-      console.log('SIGTERM signal received: closing HTTP server');
-      server.close(() => {
+    process.on('SIGTERM', async () => {
+      try {
+        console.log('SIGTERM signal received: closing HTTP server');
+        await new Promise(resolve => server.close(resolve));
         console.log('HTTP server closed');
-        mongoose.connection.close(false, () => {
-          console.log('MongoDB connection closed');
-          process.exit(0);
-        });
-      });
+        await mongoose.connection.close();
+        console.log('MongoDB connection closed');
+        process.exit(0);
+      } catch (error) {
+        console.error('Error during shutdown:', error);
+        process.exit(1);
+      }
     });
 
   } catch (error) {

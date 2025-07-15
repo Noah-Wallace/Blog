@@ -137,14 +137,14 @@ function App() {
 const Home = ({ posts }) => (
   <div>
     <h2>Latest Posts</h2>
-    {posts.length === 0 ? (
+    {!Array.isArray(posts) || posts.length === 0 ? (
       <p>No posts available.</p>
     ) : (
       posts.map(post => (
-        <div key={post._id} style={{ marginBottom: '20px', padding: '10px', border: '1px solid #ccc' }}>
+        <div key={post.id} style={{ marginBottom: '20px', padding: '10px', border: '1px solid #ccc' }}>
           <h3>{post.title}</h3>
           <p>{post.excerpt}</p>
-          <a href={`/post/${post._id}`}>Read More</a>
+          <a href={`/post/${post.id}`}>Read More</a>
         </div>
       ))
     )}

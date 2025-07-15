@@ -1,6 +1,7 @@
+// Define posts array
 const posts = [
   {
-    id: 0,
+    id: "0",
     title: "Space Architecture: Designing Homes Among the Stars",
     content: "As humanity ventures further into space, the question of how we'll live among the stars becomes increasingly relevant...",
     date: "2025-07-16",
