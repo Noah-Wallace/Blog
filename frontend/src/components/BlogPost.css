@@ -9,12 +9,11 @@
 
 /* Container */
 .blog-posts-container {
-  width: min(95%, 1800px);
-  margin: 2rem auto;
-  padding: clamp(1rem, 3vw, 2.5rem);
+  width: 100%;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: clamp(1.5rem, 2vw, 2.5rem);
+  align-items: start;
 }
 
 /* Container Query Support */

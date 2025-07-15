@@ -2,6 +2,15 @@ import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import './App.css';
 import './components/Posts.css';
+import './components/Navigation.css';
+
+import Navbar from './components/Navbar';
+import Footer from './components/Footer';
+import HeroSection from './components/HeroSection';
+import BlogPost from './components/BlogPost';
+import BlogPostView from './components/BlogPostView';
+import About from './components/About';
+import Contact from './components/Contact';
 
 // Error Boundary Component
 class ErrorBoundary extends React.Component {
@@ -90,137 +99,55 @@ function App() {
     return <Loading />;
   }
 
-  return (
-    <ErrorBoundary>
-      <Router>
-        <div className="app">
-          <nav>
-            <ul>
-              <li><a href="/">Home</a></li>
-              <li><a href="/about">About</a></li>
-              <li><a href="/contact">Contact</a></li>
-            </ul>
-          </nav>
-
-          {error ? (
-            <div style={{ padding: '20px', textAlign: 'center' }}>
-              <h2>Connection Error</h2>
-              <p>Unable to connect to the server: {error}</p>
-              <button onClick={() => window.location.reload()}>
-                Try Again
-              </button>
-            </div>
-          ) : (
-            <Routes>
-              <Route path="/" element={<Home posts={posts} />} />
-              <Route path="/about" element={<About />} />
-              <Route path="/contact" element={<Contact />} />
-              <Route path="/post/:id" element={<BlogPost posts={posts} />} />
-            </Routes>
-          )}
-        </div>
-      </Router>
-    </ErrorBoundary>
+  if (error) {
+    return (
+      <div className="error-message">
+        <h2>Error loading posts</h2>
+        <p>{error}</p>
+      </div>
     );
   }
 
   return (
-    <ErrorBoundary>
-      <Router>
-        <div className="App">
-          <header className="App-header">
-            <h1>Space Tech Blog</h1>
-            <nav>
-              <a href="/">Home</a>
-              <a href="/about">About</a>
-              <a href="/contact">Contact</a>
-            </nav>
-          </header>
-
-          <main>
+    <Router>
+      <div className="App">
+        <Navbar />
+        <main className="content-wrapper">
+          <ErrorBoundary>
             <Routes>
-              <Route path="/" element={<Home posts={posts} />} />
+              <Route path="/" element={
+                <>
+                  <HeroSection />
+                  <div className="blog-posts-container">
+                    {posts.map(post => (
+                      <BlogPost key={post.id} {...post} />
+                    ))}
+                  </div>
+                </>
+              } />
+              <Route path="/blog" element={
+                <div className="blog-posts-container">
+                  {posts.map(post => (
+                    <BlogPost key={post.id} {...post} />
+                  ))}
+                </div>
+              } />
+              <Route path="/post/:id" element={<BlogPostView posts={posts} />} />
               <Route path="/about" element={<About />} />
               <Route path="/contact" element={<Contact />} />
-              <Route path="/post/:id" element={<PostDetail />} />
-              <Route path="*" element={<NotFound />} />
+              <Route path="*" element={
+                <div className="not-found">
+                  <h2>Page Not Found</h2>
+                  <p>Sorry, the page you're looking for doesn't exist.</p>
+                </div>
+              } />
             </Routes>
-          </main>
-
-          <footer>
-            <p>&copy; 2024 Space Tech Blog</p>
-          </footer>
-        </div>
-      </Router>
-    </ErrorBoundary>
+          </ErrorBoundary>
+        </main>
+        <Footer />
+      </div>
+    </Router>
   );
 }
-
-// Home Component
-const Home = ({ posts }) => {
-  if (!posts || !Array.isArray(posts)) {
-    return (
-      <div style={{ padding: '20px', textAlign: 'center' }}>
-        <p>No posts available.</p>
-      </div>
-    );
-  }
-
-  return (
-    <div className="posts-container">
-      <h1>Latest Posts</h1>
-      <div className="posts-grid">
-        {posts.map(post => (
-          <div key={post.id} className="post-card">
-            <div className="post-image">
-              <img src={post.imageUrl} alt={post.title} />
-            </div>
-            <div className="post-content">
-              <h2>{post.title}</h2>
-              <p className="post-excerpt">{post.excerpt}</p>
-              <div className="post-meta">
-                <span className="post-date">{new Date(post.date).toLocaleDateString()}</span>
-                <span className="post-author">By {post.author}</span>
-              </div>
-              <a href={`/post/${post.id}`} className="read-more">Read More</a>
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-};
-
-// About Component
-const About = () => (
-  <div>
-    <h2>About</h2>
-    <p>Welcome to our Space Tech Blog!</p>
-  </div>
-);
-
-// Contact Component
-const Contact = () => (
-  <div>
-    <h2>Contact</h2>
-    <p>Get in touch with us!</p>
-  </div>
-);
-
-// Post Detail Component
-const PostDetail = () => (
-  <div>
-    <h2>Post Details</h2>
-    <p>Post content will be displayed here.</p>
-  </div>
-);
-
-// Not Found Component
-const NotFound = () => (
-  <div>
-    <h2>404 - Page Not Found</h2>
-    <p>The page you're looking for doesn't exist.</p>
-  </div>
-);
 
 export default App;
