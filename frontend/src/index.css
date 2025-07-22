@@ -2,7 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Base Styles 
+/* === Global Variables (optional custom theme colors) === */
+/* 
 :root {
   --color-gray-50: #F9FAFB;
   --color-gray-100: #F3F4F6;
@@ -14,22 +15,14 @@
   --color-gray-700: #374151;
   --color-gray-800: #1F2937;
   --color-gray-900: #111827;
-} */
-/*
+}
+*/
+
+/* === Base Reset and Font Smoothing === */
 html {
   -webkit-font-smoothing: antialiased;
-  /*-moz-osx-font-smoothing: grayscale;
-}*/
-
-/*body {
-  min-height: 100vh;
-  
-  margin: 0;
-  padding: 0;
-}*/
-html, body {
-  background-color: #0f172a; /* dark cosmic color */
-  /*background-image: url('/assets/space-bg.jpg');  optional */
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #0f172a; /* Cosmic dark base */
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
@@ -38,10 +31,24 @@ html, body {
   min-height: 100vh;
 }
 
+body, .App {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  background-color: #1a1a2e;
+  background-image: url('/assets/space-bg.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  color: #f1f5f9; /* Tailwind's slate-100 for readability */
+  font-family: 'Segoe UI', sans-serif;
+}
+
+/* === Headings === */
 h1, h2, h3, h4, h5, h6 {
   font-weight: 700;
   letter-spacing: -0.025em;
-  color: var(--color-gray-900);
-  margin: 0;
+  color: #f8fafc; /* Light shade for dark backgrounds */
+  margin: 0 0 0.5rem;
   line-height: 1.2;
 }
