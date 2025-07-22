@@ -10,7 +10,7 @@ html {
 }
 
 body {
-  background: linear-gradient(135deg, #0a0f1c 0%, #1a1040 100%);
+  /*background: linear-gradient(135deg, #0a0f1c 0%, #1a1040 100%);*/
   color: #e8e6ff;
   line-height: 1.6;
 }
