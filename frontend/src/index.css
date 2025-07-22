@@ -29,7 +29,7 @@ html {
 }*/
 html, body {
   background-color: #0f172a; /* dark cosmic color */
-  background-image: url('/assets/space-bg.jpg'); /* optional */
+  /*background-image: url('/assets/space-bg.jpg');  optional */
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
