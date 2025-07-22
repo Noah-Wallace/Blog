@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Base Styles */
+/* Base Styles 
 :root {
   --color-gray-50: #F9FAFB;
   --color-gray-100: #F3F4F6;
@@ -14,7 +14,7 @@
   --color-gray-700: #374151;
   --color-gray-800: #1F2937;
   --color-gray-900: #111827;
-}
+} */
 
 html {
   -webkit-font-smoothing: antialiased;
