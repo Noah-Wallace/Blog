@@ -36,9 +36,8 @@ body, .App {
   padding: 0;
   min-height: 100vh;
   background-color: #1a1a2e;
-  background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
-                url('./assets/space-bg.jpg') center/cover;
-  background-size: cover;
+  background: url('./assets/space-bg.jpg') cover;
+  
   background-repeat: no-repeat;
   background-position: center;
   color: #f1f5f9; /* Tailwind's slate-100 for readability */
