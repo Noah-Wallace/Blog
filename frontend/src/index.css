@@ -45,18 +45,13 @@ html {
   font-family: 'Segoe UI', sans-serif;
 }*/
 
-body, .App {
-  margin: 0;
-  padding: 0;
-  min-height: 100vh;
-  background:
-    linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)),
-    url('/assets/your-high-res-space.jpg');
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center;
-  color: #f1f5f9;
-  font-family: 'Playfair Display', sans-serif;
+body {
+    background: url(../../static/media/space-bg.7c1d074….jpg);
+    background-position: 50%;
+    background-repeat: no-repeat;
+    background-size: cover;
+    color: #f1f5f9; /* Keep your text color */
+    font-family: Segoe UI, sans-serif; /* Keep your font */
 }
 
 /* === Headings === */
