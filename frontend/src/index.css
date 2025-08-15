@@ -31,7 +31,7 @@ html {
   min-height: 100vh;
 }
 
-body, .App {
+/*body, .App {
   margin: 0;
   padding: 0;
   min-height: 100vh;
@@ -40,6 +40,22 @@ body, .App {
               url('./assets/space-bg.jpg');
  
   background-position: center;
+
+  color: #f1f5f9; /* Tailwind's slate-100 
+  font-family: 'Segoe UI', sans-serif;
+}*/
+
+body, .App {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+
+  background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
+              url('./assets/space-bg.jpg');
+
+  background-size: cover;          /* Make image fill screen */
+  background-repeat: no-repeat;    /* Prevent tiling */
+  background-position: center;     /* Center image */
 
   color: #f1f5f9; /* Tailwind's slate-100 */
   font-family: 'Segoe UI', sans-serif;
