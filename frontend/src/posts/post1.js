@@ -1,5 +1,7 @@
 import React from 'react';
 import "../posts.css";
+import satellitesImage from "../assets/satellites.jpg";
+
 
 const Post = () => (
   <div className="main-container">
