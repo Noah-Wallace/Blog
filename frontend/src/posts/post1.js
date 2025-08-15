@@ -53,7 +53,7 @@ Post.metadata = {
   date: "2025-05-29",
   author: "Space Explorer",
   excerpt: "Discover how revolutionary advances in space architecture are reshaping our approach to space exploration and habitation.",
-  thumbnail: "/assets/satellites.jpg" // This will be mapped in BlogPost component
+  thumbnail: satellitesImage // This will be mapped in BlogPost component
 };
 
 export default Post;
