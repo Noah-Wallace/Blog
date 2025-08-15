@@ -44,7 +44,7 @@ Post.metadata = {
   date: "2025-05-29",
   author: "Tech Explorer",
   excerpt: "Discover how microservices architecture is revolutionizing space technology and mission control systems.",
-  thumbnail: "/assets/microservices.jpg" // This will be mapped in BlogPost component
+  thumbnail: microservicesImg // This will be mapped in BlogPost component
 };
 
 export default Post;
