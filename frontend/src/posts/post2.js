@@ -1,5 +1,6 @@
 import React from 'react';
 import "../posts.css";
+import microservicesImg from "../assets/microservices.jpg";
 
 const Post = () => (
   <div className="main-container">
