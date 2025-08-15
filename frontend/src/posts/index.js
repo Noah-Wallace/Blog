@@ -13,6 +13,7 @@ export const getAllPosts = () => {
     { ...Post0.metadata, Component: Post0 },
     { ...Post1.metadata, Component: Post1 },
     { ...Post2.metadata, Component: Post2 }
+    { ...Post2.metadata, Component: Post2 }
   ];
   
   return posts.sort((a, b) => new Date(b.date) - new Date(a.date));
