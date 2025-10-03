@@ -56,10 +56,18 @@ const corsOptions = {
     const allowedOrigins = [
       process.env.CLIENT_URL,
       'https://blog-1-osgy.onrender.com',
-      'http://localhost:3000'
+      'https://chroniclesofthecosmos.onrender.com',
+      'http://localhost:3000',
+      'http://localhost:5000'
     ].filter(Boolean);
     
-    if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+    // Allow all origins in development
+    if (process.env.NODE_ENV === 'development') {
+      callback(null, true);
+      return;
+    }
+    
+    if (!origin || allowedOrigins.some(allowed => origin.includes(allowed))) {
       callback(null, true);
     } else {
       callback(new Error('Not allowed by CORS'));
