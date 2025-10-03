@@ -57,26 +57,41 @@ const corsOptions = {
       process.env.CLIENT_URL,
       'https://blog-1-osgy.onrender.com',
       'https://chroniclesofthecosmos.onrender.com',
+      'https://backend-chroniclesofcosmos.onrender.com',
       'http://localhost:3000',
       'http://localhost:5000'
     ].filter(Boolean);
     
+    // Allow requests with no origin (like mobile apps or curl requests)
+    if (!origin) {
+      callback(null, true);
+      return;
+    }
+
     // Allow all origins in development
     if (process.env.NODE_ENV === 'development') {
       callback(null, true);
       return;
     }
-    
-    if (!origin || allowedOrigins.some(allowed => origin.includes(allowed))) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
+
+    try {
+      const originUrl = new URL(origin);
+      // Check if the origin is in our allowed list
+      if (allowedOrigins.some(allowed => originUrl.href.includes(allowed))) {
+        callback(null, true);
+      } else {
+        callback(new Error('Not allowed by CORS'));
+      }
+    } catch (error) {
+      callback(new Error('Invalid origin'));
     }
   },
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
-  exposedHeaders: ['Content-Length', 'Content-Type']
+  exposedHeaders: ['Content-Length', 'Content-Type'],
+  preflightContinue: false,
+  optionsSuccessStatus: 204
 };
 
 // Apply CORS
@@ -92,7 +107,7 @@ const Engagement = require('./models/Engagement');
 
 // Base API routes
 const apiRouter = express.Router();
-app.use('/api', apiRouter);
+app.use('/', apiRouter);
 
 // Auth routes
 apiRouter.use('/auth', authRoutes);
