@@ -58,6 +58,7 @@ const corsOptions = {
       'https://blog-1-osgy.onrender.com',
       'https://chroniclesofthecosmos.onrender.com',
       'https://backend-chroniclesofcosmos.onrender.com',
+      'https://chronicles-of-the-universe.onrender.com',
       'http://localhost:3000',
       'http://localhost:5000'
     ].filter(Boolean);

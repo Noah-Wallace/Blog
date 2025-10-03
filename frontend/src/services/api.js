@@ -1,4 +1,4 @@
-const API_BASE_URL = process.env.REACT_APP_API_URL || 'https://backend-chroniclesofcosmos.onrender.com/api';
+const API_BASE_URL = process.env.REACT_APP_API_URL || 'https://backend-chroniclesofcosmos.onrender.com';
 
 export const api = {
   get: async (endpoint) => {
