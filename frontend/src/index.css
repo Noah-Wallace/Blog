@@ -22,7 +22,7 @@
 html {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: #0f172a; /* Cosmic dark base */
+  /*background-color: #0f172a; /* Cosmic dark base */
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
@@ -47,9 +47,9 @@ html {
 
 body {
     background: url('./assets/your-high-res-space.jpg');
-    background-position: 50%;
-    background-repeat: no-repeat;
-    background-size: cover;
+    background-position: 100%;
+    /*background-repeat: no-repeat;*/
+    /*background-size: cover;*/
     color: #f1f5f9; /* Keep your text color */
     font-family: Segoe UI, sans-serif; /* Keep your font */
 }

@@ -13,6 +13,7 @@ const imageMap = {
   '/assets/space-bg.jpg': spaceBg,
   '/assets/satellites.jpg': satellites,
   '/assets/microservices.jpg': microservices
+  
 };
 
 const BlogPost = ({ 

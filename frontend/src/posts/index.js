@@ -5,15 +5,15 @@ import Post2 from './post2.js';
 
 import './posts.css';
 import Navbar from '../components/Navbar';
-import Footer from '../components/Footer';
+
 
 // Function to get all posts with their metadata
 export const getAllPosts = () => {
   const posts = [
     { ...Post0.metadata, Component: Post0 },
     { ...Post1.metadata, Component: Post1 },
-    { ...Post2.metadata, Component: Post2 }
-    { ...Post2.metadata, Component: Post2 }
+    { ...Post2.metadata, Component: Post2 },
+    { ...Post2.metadata, Component: Post2 },
   ];
   
   return posts.sort((a, b) => new Date(b.date) - new Date(a.date));
@@ -71,7 +71,7 @@ function MainP() {
           ))}
         </div>
       </div>
-      <Footer />
+      
     </div>
   );
 }

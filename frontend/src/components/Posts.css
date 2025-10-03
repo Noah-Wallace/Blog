@@ -45,9 +45,9 @@
   transform: scale(1.05);
 }
 
-.post-content {
-  padding: 1.5rem;
-}
+/*.post-content {
+  /*padding: 1.5rem;
+}*/
 
 .post-content h2 {
   margin: 0 0 1rem;

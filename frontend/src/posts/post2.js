@@ -1,15 +1,10 @@
 import React from 'react';
 import "../posts.css";
-import microservicesImg from "../assets/microservices.jpg";
+import microservicesImg from '../assets/microservices.jpg';
 
 const Post = () => (
   <div className="main-container">
     <article className="blog-post-content">
-      <h1>Microservices in Space: The Future of Mission Control</h1>
-      <div className="post-metadata">
-        <span className="date">May 29, 2025</span>
-        <span className="author">By Tech Explorer</span>
-      </div>
       <div className="post-content">
         <p>The space industry is embracing microservices architecture to revolutionize how we control and manage space missions. This shift is transforming everything from ground control systems to onboard spacecraft software.</p>
 
@@ -44,7 +39,7 @@ Post.metadata = {
   date: "2025-05-29",
   author: "Tech Explorer",
   excerpt: "Discover how microservices architecture is revolutionizing space technology and mission control systems.",
-  thumbnail: microservicesImg // This will be mapped in BlogPost component
+  thumbnail: '/assets/microservices.jpg' // This will be mapped in BlogPost component
 };
 
 export default Post;

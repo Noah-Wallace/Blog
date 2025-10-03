@@ -6,6 +6,19 @@ import Footer from './Footer';
 import Engagement from './Engagement';
 import { Helmet } from 'react-helmet';
 import '../posts/posts.css';
+import './BlogPostView.css';
+
+// Import images
+import spaceBg from '../assets/space-bg.jpg';
+import satellites from '../assets/satellites.jpg';
+import microservices from '../assets/microservices.jpg';
+
+// Image mapping
+const imageMap = {
+  '/assets/space-bg.jpg': spaceBg,
+  '/assets/satellites.jpg': satellites,
+  '/assets/microservices.jpg': microservices
+};
 
 function BlogPostView() {
   const { id } = useParams();
@@ -54,24 +67,28 @@ function BlogPostView() {
         <meta property="og:description" content={post.excerpt} />
         <link rel="icon" type="image/png" sizes="32x32" href="/sparkles.png" />
       </Helmet>
-      <div className="main-container">
+      <div className="main-container" style={{ background: '#0a0a1a' }}>
         <Navbar />
+        <div className="post-hero" style={{ 
+          '--post-bg-image': `url(${imageMap[post.thumbnail] || spaceBg})` 
+        }}>
+          <div className="post-hero-overlay"></div>
+          <div className="post-hero-content">
+            <h1 className="post-title">{post.title}</h1>
+            <div className="post-metadata">
+              <span className="date">{post.date}</span>
+              <span className="author">{post.author}</span>
+            </div>
+          </div>
+        </div>
         <main className="content">
           <article className="blog-post-content">
-            <header>
-              <h1 className="post-title">{post.title}</h1>
-              <div className="post-metadata">
-                <span className="date">{post.date}</span>
-                <span className="author">{post.author}</span>
-              </div>
-            </header>
             <div className="post-content">
               <PostComponent />
             </div>
             <Engagement postId={id} />
           </article>
         </main>
-        <Footer />
       </div>
     </>
   );

@@ -56,13 +56,12 @@ header {
 
 article header {
     position: relative;
-    background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
-                url('./assets/space-bg.jpg') center/cover;
+    /*background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),center/cover;*/
     padding: 6rem 2rem;
-    margin: -2rem -2rem 3rem -2rem;
+    /*margin: -2rem -2rem 3rem -2rem;*/
     text-align: center;
     height: 60vh;
-    display: flex;
+    /*display: flex;*/
     flex-direction: column;
     justify-content: center;
     align-items: center;
