@@ -68,18 +68,19 @@ function App() {
         setIsLoading(true);
         setError(null);
         
-        const data = await import('./services/api').then(api => api.getPosts());
+        const { getPosts } = await import('./services/api');
+        const data = await getPosts();
         setPosts(data);
       } catch (err) {
         console.error('Error fetching posts:', err);
-        setError(err.message);
+        setError(err.message || 'Failed to fetch posts');
       } finally {
         setIsLoading(false);
       }
     };
 
     fetchPosts();
-  }, [API_URL]);
+  }, []); // Empty dependency array since we don't have any dependencies
 
   if (isLoading) {
     return <Loading />;
