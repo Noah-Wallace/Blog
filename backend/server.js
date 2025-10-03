@@ -108,7 +108,7 @@ const Engagement = require('./models/Engagement');
 
 // Base API routes
 const apiRouter = express.Router();
-app.use('/', apiRouter);
+app.use('/api', apiRouter);  // This ensures all routes are under /api
 
 // Auth routes
 apiRouter.use('/auth', authRoutes);

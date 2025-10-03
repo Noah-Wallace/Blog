@@ -62,27 +62,13 @@ function App() {
   const [posts, setPosts] = useState([]);
   const [error, setError] = useState(null);
 
-  // API URL from environment variable
-  const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
-
   useEffect(() => {
     const fetchPosts = async () => {
       try {
         setIsLoading(true);
         setError(null);
         
-        const response = await fetch(`${API_URL}/api/posts`, {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        });
-
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-
-        const data = await response.json();
+        const data = await import('./services/api').then(api => api.getPosts());
         setPosts(data);
       } catch (err) {
         console.error('Error fetching posts:', err);
